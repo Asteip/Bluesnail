@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import com.alma.platform.data.PluginDescriptor;
+import com.alma.platform.data.PluginInstance;
 import com.alma.platform.data.PluginParser;
 import com.alma.platform.data.PluginState;
 
@@ -45,8 +46,11 @@ public class Platform {
 	// List of plugins' states
 	private Map<PluginDescriptor, PluginState> pluginsState;
 
-	// List of plugin logs
+	// List of plugins logs
 	private List<String> logs;
+
+	// List of plugins instances
+	private List<PluginInstance> instances;
 
 	// --- CONSTRUCTOR
 
@@ -61,6 +65,7 @@ public class Platform {
 		pluginsState = new HashMap<PluginDescriptor, PluginState>();
 		monitors = new ArrayList<IMonitor>();
 		logs = new ArrayList<String>();
+		instances = new ArrayList<PluginInstance>();
 		parser = new PluginParser();
 		plugins = parser.parseFile("config.txt"); // Parse of extensions file
 
@@ -220,8 +225,8 @@ public class Platform {
 			Object newInstance = Class.forName(plugin.getClassName(), true, classLoader).newInstance();
 			pluginsState.put(plugin, PluginState.LOADED);
 
-			result = Proxy.newProxyInstance(newInstance.getClass().getClassLoader(), newInstance.getClass().getInterfaces(),
-					new LogProxy(newInstance));
+			result = Proxy.newProxyInstance(newInstance.getClass().getClassLoader(),
+					newInstance.getClass().getInterfaces(), new LogProxy(newInstance));
 
 		} catch (ClassNotFoundException e) {
 			pluginsState.put(plugin, PluginState.ERROR);
@@ -231,6 +236,7 @@ public class Platform {
 			pluginsState.put(plugin, PluginState.ERROR);
 		}
 
+		addInstance(new PluginInstance(PluginInstance.TYPE_EXT, plugin.getPluginName(), result));
 		notifyMonitor();
 
 		return result;
@@ -288,7 +294,8 @@ public class Platform {
 	/**
 	 * Add a log in the list. Each time a method is called, a log is added.
 	 * 
-	 * @param log A string which represents the log
+	 * @param log
+	 *            A string which represents the log
 	 */
 	public void addLog(String log) {
 		logs.add(log);
@@ -302,6 +309,35 @@ public class Platform {
 	 */
 	public List<String> getLog() {
 		return logs;
+	}
+
+	/**
+	 * Add an instance of a loaded plugin in the list.
+	 * 
+	 * @param instance
+	 *            Object which contains the instance of the plugin.
+	 */
+	public void addInstance(PluginInstance instance) {
+		instances.add(instance);
+	}
+	
+	/**
+	 * Returns an instance of a loaded plugin.
+	 * 
+	 * @param name The name of the instance.
+	 * @return Object which contains the instance of the plugin.
+	 */
+	public PluginInstance getInstance(String name){
+		PluginInstance result = null;
+		
+		for(PluginInstance instance : instances){
+			if(instance.getName().equals(name) && instance.getInstance() != null){
+				result = instance;
+				break;
+			}
+		}
+		
+		return result;
 	}
 
 }
