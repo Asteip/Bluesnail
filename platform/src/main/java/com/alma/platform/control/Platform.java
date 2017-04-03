@@ -312,7 +312,7 @@ public class Platform {
 	}
 
 	/**
-	 * Add an instance of a loaded plugin in the list.
+	 * Add the instance of a loaded plugin in the list of instances.
 	 * 
 	 * @param instance
 	 *            Object which contains the instance of the plugin.
@@ -322,7 +322,7 @@ public class Platform {
 	}
 	
 	/**
-	 * Returns an instance of a loaded plugin.
+	 * Returns the instance of a loaded plugin.
 	 * 
 	 * @param name The name of the instance.
 	 * @return Object which contains the instance of the plugin.
@@ -330,9 +330,9 @@ public class Platform {
 	public PluginInstance getLoadedInstance(String name){
 		PluginInstance result = null;
 		
-		for(PluginInstance instance : loadedInstances){
-			if(instance.getName().equals(name) && instance.getInstance() != null){
-				result = instance;
+		for(PluginInstance loadedInstance : loadedInstances){
+			if(loadedInstance.getName().equals(name)){
+				result = loadedInstance;
 				break;
 			}
 		}
