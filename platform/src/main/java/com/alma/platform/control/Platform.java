@@ -212,7 +212,7 @@ public class Platform {
 	 * 
 	 * @param plugin
 	 *            The plugin description that have to be instanced.
-	 * @return
+	 * @return The instance of the plugin.
 	 * @throws ClassNotFoundException
 	 * @throws InstantiationException
 	 * @throws IllegalAccessException
