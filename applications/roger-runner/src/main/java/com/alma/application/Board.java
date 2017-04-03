@@ -24,7 +24,6 @@ import javax.swing.Timer;
 
 import com.alma.platform.control.Platform;
 import com.alma.platform.data.PluginDescriptor;
-import com.alma.platform.data.PluginInstance;
 
 public class Board extends JPanel implements ActionListener {
 
