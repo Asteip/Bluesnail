@@ -118,6 +118,12 @@ public class HighScore extends JFrame implements IHighScore, ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		this.listHighScore.put(nameJField.getText(), score);
+		try {
+			hardSave.saveScore(listHighScore);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		dispose();
 	}
 
