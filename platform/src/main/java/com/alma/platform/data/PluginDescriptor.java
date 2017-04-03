@@ -32,8 +32,8 @@ public class PluginDescriptor {
 	private boolean autorun;
 
 	/**
-	 * @brief Default constructor, initialize all attributes to null or their
-	 *        default value.
+	 * Default constructor, initialize all attributes to null or their default
+	 * value.
 	 */
 	public PluginDescriptor() {
 		this.pluginName = null;
