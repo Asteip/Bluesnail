@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 
 import com.alma.platform.data.PluginDescriptor;
-import com.alma.platform.data.PluginInstance;
 import com.alma.platform.data.PluginParser;
 import com.alma.platform.data.PluginState;
 
@@ -49,9 +48,6 @@ public class Platform {
 	// List of plugins logs
 	private List<String> logs;
 
-	// List of plugins instances
-	private List<PluginInstance> loadedInstances;
-
 	// --- CONSTRUCTOR
 
 	/**
@@ -65,7 +61,6 @@ public class Platform {
 		pluginsState = new HashMap<PluginDescriptor, PluginState>();
 		monitors = new ArrayList<IMonitor>();
 		logs = new ArrayList<String>();
-		loadedInstances = new ArrayList<PluginInstance>();
 		parser = new PluginParser();
 		plugins = parser.parseFile("config.txt"); // Parse of extensions file
 
@@ -236,7 +231,6 @@ public class Platform {
 			pluginsState.put(plugin, PluginState.ERROR);
 		}
 
-		addLoadedInstance(new PluginInstance(PluginInstance.TYPE_EXT, plugin.getPluginName(), result));
 		notifyMonitor();
 
 		return result;
@@ -309,35 +303,6 @@ public class Platform {
 	 */
 	public List<String> getLog() {
 		return logs;
-	}
-
-	/**
-	 * Add the instance of a loaded plugin in the list of instances.
-	 * 
-	 * @param instance
-	 *            Object which contains the instance of the plugin.
-	 */
-	public void addLoadedInstance(PluginInstance instance) {
-		loadedInstances.add(instance);
-	}
-	
-	/**
-	 * Returns the instance of a loaded plugin.
-	 * 
-	 * @param name The name of the instance.
-	 * @return Object which contains the instance of the plugin.
-	 */
-	public PluginInstance getLoadedInstance(String name){
-		PluginInstance result = null;
-		
-		for(PluginInstance loadedInstance : loadedInstances){
-			if(loadedInstance.getName().equals(name)){
-				result = loadedInstance;
-				break;
-			}
-		}
-		
-		return result;
 	}
 
 }
