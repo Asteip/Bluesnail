@@ -85,7 +85,7 @@ public class HighScore extends JFrame implements IHighScore, ActionListener {
 		
 		
 		this.setTitle("Animation");
-		this.setSize(300, 100);
+		this.setSize(300, 200);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		container.setBackground(Color.white);
