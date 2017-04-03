@@ -10,11 +10,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import com.alma.application.IHighScore;
@@ -32,6 +34,7 @@ public class HighScore extends JFrame implements IHighScore, ActionListener {
 	private JFormattedTextField nameJField;
 	private JLabel label;
 	private JButton Validate;
+	private JScrollPane scrollPanel;
 	JTable tableauScore;
 
 	/**
@@ -84,21 +87,29 @@ public class HighScore extends JFrame implements IHighScore, ActionListener {
 		Validate = new JButton("OK");
 		
 		
-		this.setTitle("Animation");
-		this.setSize(300, 200);
+		this.setTitle("High Score");
+		//this.setSize(400, 100);
+		//this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
-		container.setBackground(Color.white);
-		container.setLayout(new BorderLayout());
+		//container.setBackground(Color.white);
+		//container.setLayout(new BorderLayout());
 		JPanel top = new JPanel();
-		Font police = new Font("Arial", Font.BOLD, 14);
+		Font police = new Font("Arial", Font.BOLD, 12);
 		nameJField.setFont(police);
 		nameJField.setPreferredSize(new Dimension(150, 30));
 		Validate.addActionListener(this);
+        top.setLayout(new BoxLayout(top, BoxLayout.Y_AXIS));
 		top.add(label);
 		top.add(nameJField);
 		top.add(Validate);
+		container.add(top);
+	    this.pack();		
+
 		
+	    BoxLayout boxLayout = new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS); // top to bottom
+	    this.setLayout(boxLayout);
+	    this.add(container);
 		try {
 			this.listHighScore= hardSave.getScore();
 		} catch (IOException e) {
@@ -106,7 +117,8 @@ public class HighScore extends JFrame implements IHighScore, ActionListener {
 			e.printStackTrace();
 		}
 		getListScoreToJtable();
-		top.add(tableauScore);
+		scrollPanel = new JScrollPane(tableauScore);
+		top.add(scrollPanel);
 		
 		this.setContentPane(top);
 		this.setVisible(true);
