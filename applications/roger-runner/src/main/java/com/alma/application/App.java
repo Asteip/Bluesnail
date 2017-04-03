@@ -26,6 +26,7 @@ public class App extends JFrame implements IMainPlugin {
 
 	private JPanel contentPanel;
 	private JPanel mainPanel;
+	private Board mainboard;
 
 	public App() {
 		// on crée le panel container
@@ -41,7 +42,8 @@ public class App extends JFrame implements IMainPlugin {
 		contentPanel.add(mainPanel);
 
 		// on ajoute le main pannel et on configure le reste de la frame
-		add(new Board());
+		mainboard=new Board();
+		add(mainboard);		
 		pack();
 		setTitle("Roger");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -55,7 +57,7 @@ public class App extends JFrame implements IMainPlugin {
 		JMenuBar menubar = new JMenuBar();
 		JMenu file = new JMenu("File");
 		file.setMnemonic(KeyEvent.VK_F);
-
+		JMenuItem restartMenuItem = new JMenuItem("Restart");
 		JMenuItem eMenuItem = new JMenuItem("Exit");
 		eMenuItem.setMnemonic(KeyEvent.VK_E);
 		eMenuItem.setToolTipText("Exit application");
@@ -65,8 +67,18 @@ public class App extends JFrame implements IMainPlugin {
 				System.exit(0);
 			}
 		});
+		
+		restartMenuItem.setMnemonic(KeyEvent.VK_E);
+		restartMenuItem.setToolTipText("Restart the game");
+		restartMenuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				mainboard.restartGame();
+			}
+		});
 
 		file.add(eMenuItem);
+		file.add(restartMenuItem);
 		menubar.add(file);
 		setJMenuBar(menubar);
 		mainPanel.add(new Board());

@@ -46,6 +46,7 @@ public class Board extends JPanel implements ActionListener {
 	private int[][] pos = new int[NBR_FIRE][NBR_FIRE];
 	private IHighScore highScore;
 	private Integer scoretemp;
+	private TAdapter keyActionAdapter;
 
 	void initPos() {
 		rdm = new Random();
@@ -62,12 +63,9 @@ public class Board extends JPanel implements ActionListener {
 
 	private void initBoard() {
 		initPos();
-
-		addKeyListener(new TAdapter());
-		setFocusable(true);
-		// Image background = Toolkit.getDefaultToolkit().createImage(
-		// "Background.png");
-		// this.drawImage(background, 0, 0, null);
+		keyActionAdapter=new TAdapter();
+		addKeyListener(keyActionAdapter);
+		setFocusable(true);		
 		backgroundImage = new Background(0, 0, "background.png");
 		backgroundImageSwitch = new Background(1333, 0, "backgroundswitch.png");
 
@@ -304,4 +302,18 @@ public class Board extends JPanel implements ActionListener {
 			}
 		}
 	}
+	
+	
+	public void restartGame(){						
+		ingame = true;
+		roger.move(ICRAFT_X, ICRAFT_Y);
+		roger.setVisible(true);
+		initAliens();		
+		timer.start();
+		generationOffset = 0;
+		startTime = System.currentTimeMillis();
+		scoretemp=0;		
+	}
+	
+	
 }
