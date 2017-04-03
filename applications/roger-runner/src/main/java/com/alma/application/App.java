@@ -76,9 +76,8 @@ public class App extends JFrame implements IMainPlugin {
 				mainboard.restartGame();
 			}
 		});
-
-		file.add(eMenuItem);
 		file.add(restartMenuItem);
+		file.add(eMenuItem);		
 		menubar.add(file);
 		setJMenuBar(menubar);
 		mainPanel.add(new Board());
