@@ -6,8 +6,6 @@ public interface IHighScore {
 
 	public Integer incrementScore();
 
-	public void SaveScore();
-
 	public void DisplayNameWindow();
 
 	public HashMap<String, Integer> getListHighScore();

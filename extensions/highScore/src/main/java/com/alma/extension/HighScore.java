@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
@@ -17,7 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 
 import com.alma.application.IHighScore;
-
+import com.alma.extension.PersistentHighScore;;
 /**
  * Extension to manage the HighScore
  * 
@@ -38,6 +39,7 @@ public class HighScore extends JFrame implements IHighScore, ActionListener {
 	 */
 	private HashMap<String, Integer> listHighScore;
 	private int score;
+	private PersistentHighScore hardSave;
 
 	/**
 	 * constructor
@@ -45,14 +47,10 @@ public class HighScore extends JFrame implements IHighScore, ActionListener {
 	public HighScore() {
 		this.listHighScore = new HashMap<String, Integer>();
 		this.score = 0;
+		hardSave= new PersistentHighScore();
 	}
 
-	/**
-	 * save the score in the hashmap
-	 */
-	public void SaveScore() {
-
-	}
+	
 
 	/**
 	 * increment score
@@ -87,7 +85,7 @@ public class HighScore extends JFrame implements IHighScore, ActionListener {
 		
 		
 		this.setTitle("Animation");
-		this.setSize(300, 100);
+		this.setSize(300, 200);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		container.setBackground(Color.white);
@@ -100,18 +98,32 @@ public class HighScore extends JFrame implements IHighScore, ActionListener {
 		top.add(label);
 		top.add(nameJField);
 		top.add(Validate);
+		
+		try {
+			this.listHighScore= hardSave.getScore();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		getListScoreToJtable();
 		top.add(tableauScore);
+		
 		this.setContentPane(top);
 		this.setVisible(true);
 	}
 
 	/**
-	 * manage buttons ons the scores' window
+	 * manage buttons on the scores' window
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-			this.listHighScore.put(nameJField.getText(), score);
+		this.listHighScore.put(nameJField.getText(), score);
+		try {
+			hardSave.saveScore(listHighScore);
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		dispose();
 	}
 

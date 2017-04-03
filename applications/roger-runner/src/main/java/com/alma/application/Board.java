@@ -13,9 +13,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.logging.Level;
@@ -26,6 +24,7 @@ import javax.swing.Timer;
 
 import com.alma.platform.control.Platform;
 import com.alma.platform.data.PluginDescriptor;
+import com.alma.platform.data.PluginInstance;
 
 public class Board extends JPanel implements ActionListener {
 
