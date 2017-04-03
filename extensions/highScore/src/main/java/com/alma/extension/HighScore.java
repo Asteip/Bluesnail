@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
@@ -34,9 +35,11 @@ public class HighScore extends JFrame implements IHighScore, ActionListener {
 	private JPanel container;
 	private JFormattedTextField nameJField;
 	private JLabel label;
+	private JLabel scorelabel;
 	private JButton Validate;
 	private JScrollPane scrollPanel;
 	JTable tableauScore;
+	
 
 	/**
 	 * attributes about HighScore and score
@@ -78,13 +81,14 @@ public class HighScore extends JFrame implements IHighScore, ActionListener {
 	}
 
 	/**
-	 * Display the window to get the name of the player and displaythe list of score
+	 * Display the window to get the name of the player and display the list of score
 	 */
 	public void DisplayNameWindow() {
 		
 		container = new JPanel();
 		nameJField = new JFormattedTextField();
 		label = new JLabel("Player's name :");
+		scorelabel = new JLabel("your score is :"+score);
 		Validate = new JButton("OK");
 		
 		
@@ -93,16 +97,16 @@ public class HighScore extends JFrame implements IHighScore, ActionListener {
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
-		//container.setBackground(Color.white);
-		//container.setLayout(new BorderLayout());
 		JPanel top = new JPanel();
 		Font police = new Font("Arial", Font.BOLD, 12);
 		nameJField.setFont(police);
 		nameJField.setPreferredSize(new Dimension(150, 30));
 		Validate.addActionListener(this);
         top.setLayout(new BoxLayout(top, BoxLayout.Y_AXIS));
+		//top.setAlignmentX(Validate.LEFT_ALIGNMENT);
 		top.add(label);
 		top.add(nameJField);
+		top.add(scorelabel);
 
 	    this.pack();		
 	    this.add(container);
@@ -115,7 +119,7 @@ public class HighScore extends JFrame implements IHighScore, ActionListener {
 		getListScoreToJtable();
 		scrollPanel = new JScrollPane(tableauScore);
 		top.add(scrollPanel);
-		top.add(Validate);
+		top.add(Validate,BorderLayout.CENTER);
 		container.add(top);
 		this.setContentPane(top);
 		this.setVisible(true);
