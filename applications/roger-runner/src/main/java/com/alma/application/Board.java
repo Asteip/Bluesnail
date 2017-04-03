@@ -127,7 +127,7 @@ public class Board extends JPanel implements ActionListener {
 		} else {
 			drawGameOver(g);
 			highScore.DisplayNameWindow();
-			
+			//Platform.getInstance().
 		}
 
 		Toolkit.getDefaultToolkit().sync();
