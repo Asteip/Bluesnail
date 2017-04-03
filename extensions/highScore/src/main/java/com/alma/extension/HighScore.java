@@ -3,6 +3,7 @@ package com.alma.extension;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -89,7 +90,7 @@ public class HighScore extends JFrame implements IHighScore, ActionListener {
 		
 		this.setTitle("High Score");
 		//this.setSize(400, 100);
-		//this.setResizable(false);
+		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 		//container.setBackground(Color.white);
@@ -102,13 +103,8 @@ public class HighScore extends JFrame implements IHighScore, ActionListener {
         top.setLayout(new BoxLayout(top, BoxLayout.Y_AXIS));
 		top.add(label);
 		top.add(nameJField);
-		top.add(Validate);
-		container.add(top);
-	    this.pack();		
 
-		
-	    BoxLayout boxLayout = new BoxLayout(this.getContentPane(), BoxLayout.Y_AXIS); // top to bottom
-	    this.setLayout(boxLayout);
+	    this.pack();		
 	    this.add(container);
 		try {
 			this.listHighScore= hardSave.getScore();
@@ -119,7 +115,8 @@ public class HighScore extends JFrame implements IHighScore, ActionListener {
 		getListScoreToJtable();
 		scrollPanel = new JScrollPane(tableauScore);
 		top.add(scrollPanel);
-		
+		top.add(Validate);
+		container.add(top);
 		this.setContentPane(top);
 		this.setVisible(true);
 	}

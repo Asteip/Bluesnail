@@ -1,7 +1,9 @@
 toto:18
-:1
+:0
 jhdkdjh:0
 test:1
+bambam:3
+fringlishta:0
 walid:3
 ailee:16
 gilles:0
@@ -10,4 +12,5 @@ pierre:22
 salma:2
 jackson:8
 dolly:2
+kindle:0
 jkhkjhk:0
