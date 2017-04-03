@@ -50,7 +50,7 @@ public class Platform {
 	private List<String> logs;
 
 	// List of plugins instances
-	private List<PluginInstance> instances;
+	private List<PluginInstance> loadedInstances;
 
 	// --- CONSTRUCTOR
 
@@ -65,7 +65,7 @@ public class Platform {
 		pluginsState = new HashMap<PluginDescriptor, PluginState>();
 		monitors = new ArrayList<IMonitor>();
 		logs = new ArrayList<String>();
-		instances = new ArrayList<PluginInstance>();
+		loadedInstances = new ArrayList<PluginInstance>();
 		parser = new PluginParser();
 		plugins = parser.parseFile("config.txt"); // Parse of extensions file
 
@@ -236,7 +236,7 @@ public class Platform {
 			pluginsState.put(plugin, PluginState.ERROR);
 		}
 
-		addInstance(new PluginInstance(PluginInstance.TYPE_EXT, plugin.getPluginName(), result));
+		addLoadedInstance(new PluginInstance(PluginInstance.TYPE_EXT, plugin.getPluginName(), result));
 		notifyMonitor();
 
 		return result;
@@ -317,8 +317,8 @@ public class Platform {
 	 * @param instance
 	 *            Object which contains the instance of the plugin.
 	 */
-	public void addInstance(PluginInstance instance) {
-		instances.add(instance);
+	public void addLoadedInstance(PluginInstance instance) {
+		loadedInstances.add(instance);
 	}
 	
 	/**
@@ -327,10 +327,10 @@ public class Platform {
 	 * @param name The name of the instance.
 	 * @return Object which contains the instance of the plugin.
 	 */
-	public PluginInstance getInstance(String name){
+	public PluginInstance getLoadedInstance(String name){
 		PluginInstance result = null;
 		
-		for(PluginInstance instance : instances){
+		for(PluginInstance instance : loadedInstances){
 			if(instance.getName().equals(name) && instance.getInstance() != null){
 				result = instance;
 				break;

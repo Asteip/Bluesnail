@@ -17,7 +17,7 @@ public class Launcher {
 			// Starting each plugin in autorun mode
 			for (PluginDescriptor plugin : platform.getAutorunPlugin()) {
 				IMainPlugin mainPlugin = (IMainPlugin) platform.getPluginInstance(plugin);
-				platform.addInstance(new PluginInstance(PluginInstance.TYPE_APP, plugin.getPluginName(), mainPlugin));
+				platform.addLoadedInstance(new PluginInstance(PluginInstance.TYPE_APP, plugin.getPluginName(), mainPlugin));
 
 				if (mainPlugin != null)
 					mainPlugin.run();
