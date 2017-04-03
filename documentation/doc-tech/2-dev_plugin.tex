@@ -8,7 +8,7 @@
         
         \item \textbf{extensions} : Contient les différentes extensions.
         
-        \item \textbf{documentation} : Contient la documentation technique ainsi que la documentation du code source (javadoc).
+        \item \textbf{documentation} : Contient la documentation technique ainsi que la documentation du code source (java-doc).
         
         \item \textbf{template} : Contient des templates utilisés pour la création de plugin.
     \end{itemize}
@@ -16,18 +16,18 @@
 \subsection{Créer un nouveau plugin}
 \label{subsec:creation_plugin}
 
-    Il est possible de créer deux types de plugin : application ou extension (voir \ref{subsec:vocabulaire}). Pour créer un plugin, exécuter une des commandes suivantes :
+    Il est possible de créer deux types de plugin : application ou extension (cf. section \ref{subsec:vocabulaire}). Pour créer un plugin, exécuter une des commandes suivantes :
     
     \begin{itemize}
         \item Créer une application :
         \begin{lstlisting}[language=bash]
-        ./bluesnail.sh -c <app-name>
+        $ ./bluesnail.sh -c <app-name>
         \end{lstlisting}
         Où <app-name> correspond au nom de l'application à créer.
         
         \item Créer une extension :
         \begin{lstlisting}[language=bash]
-        ./bluesnail.sh -c <extension-name> -p <app-name>
+        $ ./bluesnail.sh -c <extension-name> -p <app-name>
         \end{lstlisting}
         Où <extension-name> correspond au nom de la nouvelle extension et <app-name> correspond à l'application à étendre.
     \end{itemize}
@@ -35,11 +35,13 @@
     Une fois le plugin créé, un répertoire portant son nom et contenant le projet maven est créé, soit dans le répertoire "applications" si le plugin est une application, soit dans le répertoire "extensions" si le plugin est une extension. Pour importer un projet maven dans eclipse :
     
     \begin{enumerate}
-        \item Ouvrir la version eclipse située dans \textit{/media/enseignants/...}
+        \item Ouvrir la version eclipse située dans \textit{/media/Enseignant/eclipse/}
         \item Sélectionner "file" $\rightarrow$ "import" $\rightarrow$ "Maven" $\rightarrow$ "Existing Maven Projects" puis "next"
         \item Choisir le répertoire contenant le pom.xml (racine du projet)
         \item Cliquer sur "finish"
     \end{enumerate}
+    
+    Note : il est possible d'avoir des erreurs de dépendances pendant le développement, pour les corriger un "update" sur le projet peut les corriger (Clic droit sur le projet $\rightarrow$ "Maven" $\rightarrow$ "Update project...").
 
 \subsection{Configurer un plugin}
 
@@ -51,21 +53,21 @@
         \item Une classe générée automatiquement.
     \end{itemize}
     
-    Le projet contient également un répertoire pour les tests si vous souhaitez tester le plugin avant la mise en service.
+    Le projet contient également un répertoire pour les tests si l'utilisateur souhaite tester le plugin avant sa mise en service.
     
     \paragraph{\textcolor{red}{Important}}
-    \textcolor{red}{Le nom du package principal ne doit pas être modifié (il est possible de créer d'autre package en cas de besoin). De plus, chaque classe créée (quelque soit le projet) doit avoir un nom unique.}
+    \textcolor{red}{Le nom du package principal ne doit pas être modifié (il est possible de créer d'autres packages en cas de besoin). De plus, chaque classe créée (quelque soit le projet) doit avoir un nom unique.}
     
     \paragraph{Configurer la classe principale d'une application} 
     Si le plugin créé est une application, alors la classe principale doit impérativement implémenter l'interface "IMainPlugin" de la plate-forme (Note : la classe à importer est "com.alma.platform.data.IMainPlugin" ; les dépendances sont déjà configurées dans le fichier pom.xml). L'interface "IMainPlugin" impose de redéfinir la méthode run(), cette méthode est automatiquement appelée lors de l'exécution de l'application.
     
     \paragraph{Configurer la classe principale d'une extension} 
-    Si le plugin créé est une extension d'une application existante, alors la classe principale de l'extension doit implémenter l'interface correspondant au besoin réalisé (Note : la classe à importer est de la forme "com.alma.application.<interface>" où "interface" correspond au besoin à réaliser ; les dépendances vers l'application son déjà configurées, d'où l'importance de ne pas modifier le nom du package principal).
+    Si le plugin créé est l'extension d'une application existante, alors la classe principale de l'extension doit implémenter l'interface correspondant au besoin réalisé (Note : la classe à importer est de la forme "com.alma.application. <interface>" où "interface" correspond au besoin à réaliser ; les dépendances vers l'application son déjà configurées, d'où l'importance de ne pas modifier le nom du package principal).
     
     \paragraph{Configurer la classe principale d'un Monitor} 
-    Si le plugin créé est un monitor, alors non seulement il doit implémenter l'interface "IMainPlugin", mais il doit aussi implémenter "IMonitor". De plus, pour être pris en compte par la plate-forme, le monitor doit s'ajouter à la liste des monitor (addMonitor(IMonitor monitor)).
+    Si le plugin créé est un monitor, alors non seulement il doit implémenter l'interface "IMainPlugin", mais il doit aussi implémenter "IMonitor". De plus, pour être pris en compte par la plate-forme, le monitor doit s'ajouter à la liste des monitor (addMonitor(IMonitor monitor), voir java-doc).
     
-    \paragraph{Fichier de configuration} Le fichier "config.txt" contient les informations nécessaires au chargement des plugin dans la plate-forme. Il est situé à la racine du répertoire "platform". Lors de la création d'un plugin, une ligne est ajoutée à ce fichier contenant des règles préétablies. Celle-ci doit être modifiée afin de répondre au mieux au besoin de l'utilisateur. La syntaxe suivante doit être respectée :
+    \paragraph{Fichier de configuration} Le fichier "config.txt" contient les informations nécessaires au chargement des plugin dans la plate-forme. Il est situé à la racine du répertoire "platform". Lors de la création d'un plugin, une ligne est ajoutée à ce fichier contenant des règles préétablies. Celle-ci doit être modifiée afin de répondre au mieux au besoin de l'utilisateur. Les règles suivantes doivent être respectées :
     
     \begin{itemize}
         \item Un plugin est déclaré sur une seule ligne
@@ -86,16 +88,22 @@
     La plate-forme (cf. section \ref{sec:desc_plateforme}) offre plusieurs méthodes utilisables par les plugin. Ces méthodes sont détaillées dans la java-doc de la plate-forme (dossier documentation/doc-platform/). Les principales méthodes de l'API sont :
     
     \begin{itemize}
-        \item getInstance() : Retourner l'instance unique de la plate-forme.
-        \item getListPlugin() : Retourne la liste de tous les plugin disponibles.
-        \item getListPlugin(java.lang.Class<?> need) : Retourne la liste des plugin disponibles correspondant au besoin (need). Le besoin est exprimé via une interface que doit implémenter la classe principale du plugin.
+        \item getInstance() : Retourne l'instance unique de la plate-forme.
+        \item getListPlugin() : Retourne la liste de tous les plugins disponibles.
+        \item getListPlugin(java.lang.Class<?> need) : Retourne la liste des plugins disponibles correspondant au besoin (need). Le besoin est exprimé grâce à une interface que doit implémenter la classe principale du plugin.
         \item getPluginInstance(PluginDescriptor plugin) : Retourne une instance du plugin passé en paramètre.
     \end{itemize}
+    
+    Dans la plate-forme, un plugin est représenté par un objet PluginDescriptor. Cet objet contient une description du plugin (nom, classe principale, interface implémentée, etc.). Pour créer une instance d'un plugin, il faut utiliser la méthode "getPluginInstance" prenant en paramètre un objet de type PluginDescriptor.
+    
+    Exemple d'utilisation de la plate-forme pour instancier un plugin "HighScore" (dans l'application roger-runner) :
+    
+    \lstinputlisting[caption={Exemple d'extension utilisant la plate-forme}, language=Java, captionpos=b,keywordstyle=\color{blue},stringstyle=\color{red},]{data/exemple-extension.java}
 
 \subsection{Compiler un plugin}
     Pour compiler un plugin, il existe trois possibilités :
     \begin{itemize}
-        \item Sur eclipse : si le projet a été importé sous eclipse, il est possible de compiler directement l'intégralité des projets (le projet de la plate-forme ainsi que les autres plugin doivent être ouvert).
-        \item Avec maven : pour compiler le plugin en ligne de commande, il suffit de se déplacer dans le répertoire du plugin et de taper "mvn package".
-        \item Avec le script bash : la commande "./bluesnail -i" aura pour effet de recompiler tous les plugin existants ainsi que la plate-forme.
+        \item Sur eclipse : si le projet a été importé sous eclipse, il est possible de compiler directement l'intégralité des projets (le projet de la plate-forme ainsi que les autres plugins doivent être ouvert dans l'IDE).
+        \item Avec maven : pour compiler le plugin en ligne de commande, il suffit de se déplacer dans le répertoire du plugin et d'exécuter la commande "mvn package".
+        \item Avec le script bash : la commande "./bluesnail -i" aura pour effet de recompiler tous les plugins existants ainsi que la plate-forme.
     \end{itemize}

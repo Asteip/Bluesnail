@@ -3,9 +3,16 @@
 
 \subsection{Structure de la plate-forme}
 
+    La plate-forme est découpée en deux parties : la partie "control" et la partie "data". La première contient les classes "contrôle" de la plate-forme, c'est-à-dire les classes d'interactions avec les classes "extérieures" (plugins). La seconde contient les classes gérant l'accès aux données, avec par exemple la classe PluginParser qui permet de parser le fichier de configuration. Un lanceur est situé à l'extérieur des premier package contient la méthode main permettant d'exécuter la plate-forme. Pour plus d'informations sur les fonctionnalités offertes par la plate-forme, consulter la java-doc de la plate-forme.
 
+\subsection{Illustration de l'utilisation de la plate-forme}
 
-
-%une documentation décrivant  la plateforme, les choix de conception et les fonctionnalités qu'elle offre, sa configuration éventuelle... Ce document doit faciliter l'évaluation et la maintenance de la plateforme.
-
-%Les informations indiquant comment votre application illustre l'utilisation des fonctionnalités de votre plateforme peuvent être placées dans la documentation de votre choix.
+    L'application de base Roger-Runner possède une extension HighScore qui sauvegarde le score courant et le sauvegarde de manière permanente. Lors de l'utilisation de cette extension l'application fait appel à la plate-forme pour lui exprimer son besoin d'avoir une instance de l'extension pour fonctionner. Cet appel se fait de la façon suivante :
+    \lstinputlisting[caption={Récupération d'une liste de PluginDescriptor avec la contrainte IHighScore}, language=Java, captionpos=b,keywordstyle=\color{blue},stringstyle=\color{red},]{data/exemple-utilisation-plateforme.java}
+    Ici nous récupérons une liste des PluginDescriptors qui utilisent l'interface IHighScore.
+    \lstinputlisting[caption={Récupération d'une instance de HighScore}, language=Java, captionpos=b,keywordstyle=\color{blue},stringstyle=\color{red},]{data/exemple-utilisation-plateforme-2.java}
+    L'étape suivante consiste à demander à la plateforme une instance du plugins choisi, ici le premiers de la liste de PluginDescriptor.
+    \newline
+    
+    Un autre exemple est celui du monitoring. L'extension Monitor est une extension configurée pour être autorun. Donc au lancement de la plateforme, lorsque celle ci parcourt la liste des plugins connus elle charge le monitor automatiquement. Le monitor ensuite dans son constructeur s'insére dans la liste des monitors de la plateforme. Le chargement des plugins en autorun se passe dans la classe launcher dans une boucle qui parcours les plugins autorun :
+    \lstinputlisting[caption={Chargement des plugins en autorun}, language=Java, captionpos=b,keywordstyle=\color{blue},stringstyle=\color{red},]{data/exemple-plugin-autorun.java}
