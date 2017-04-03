@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.logging.Level;
@@ -91,7 +92,7 @@ public class Board extends JPanel implements ActionListener {
 			List<PluginDescriptor> listHighScore = new ArrayList<PluginDescriptor>();
 			listHighScore = Platform.getInstance().getListPlugin(IHighScore.class);
 			
-			System.out.println( "LISTHIGHSCORE :"+listHighScore.get(0).toString());
+			
 			if (!listHighScore.isEmpty())
 				highScore = null;
 				highScore = (IHighScore) Platform.getInstance().getPluginInstance(listHighScore.get(0));
@@ -125,6 +126,8 @@ public class Board extends JPanel implements ActionListener {
 			drawObjects(g);
 		} else {
 			drawGameOver(g);
+			highScore.DisplayNameWindow();
+			
 		}
 
 		Toolkit.getDefaultToolkit().sync();
@@ -169,11 +172,8 @@ public class Board extends JPanel implements ActionListener {
 		g.setFont(small);
 		g.drawString(msg, (B_WIDTH - fm.stringWidth(msg)) / 2, B_HEIGHT / 2);
 		
-		highScore.DisplayNameWindow();
 		
-		String scoreLine=new String("");
-		HashMap<String,Integer> listHighScoretemp = new HashMap<String,Integer>();
-		listHighScoretemp = highScore.getListHighScore();
+		
 	}
 
 	@Override
