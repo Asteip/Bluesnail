@@ -190,5 +190,17 @@ public class Roger extends Sprite {
 		image3 = ii.getImage();
 	}
 	
+	void setX(int x){
+		this.x=x;
+	}
+	
+	void setY(int y){
+		this.y=y;
+	}
+	
+	void resetMove(){
+		this.dx=0;
+		this.dy=0;
+	}
 	
 }

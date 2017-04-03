@@ -304,9 +304,12 @@ public class Board extends JPanel implements ActionListener {
 	}
 	
 	
-	public void restartGame(){						
+	public void restartGame(){
+		timer.stop();
 		ingame = true;
-		roger.move(ICRAFT_X, ICRAFT_Y);
+		roger.resetMove();
+		roger.setX(ICRAFT_X);
+		roger.setY(ICRAFT_Y);		
 		roger.setVisible(true);
 		initAliens();		
 		timer.start();
