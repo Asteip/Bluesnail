@@ -22,15 +22,19 @@ import java.util.logging.Logger;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import com.alma.application.interfaces.alien.IAlien;
+import com.alma.application.interfaces.alien.IAlienFactory;
 import com.alma.platform.control.Platform;
 import com.alma.platform.data.PluginDescriptor;
 
 public class Board extends JPanel implements ActionListener {
-
+	
+    private List<IAlienFactory> factories;
+    IAlienFactory alienFactory;
 	private Timer timer;
 	private long startTime;
 	private Roger roger;
-	private ArrayList<Alien> aliens;
+	private ArrayList<IAlien> aliens;
 	private boolean ingame;
 	private final int ICRAFT_X = 40;
 	private final int ICRAFT_Y = 60;
@@ -38,7 +42,7 @@ public class Board extends JPanel implements ActionListener {
 	private final int B_HEIGHT = 500;
 	private final int DELAY = 15;
 	private final int NBR_FIRE = 50;
-	private final int GenerationDelay = 50;
+	private final int GenerationDelay = 10;
 	int generationOffset;
 	private Background backgroundImage;
 	private Background backgroundImageSwitch;
@@ -58,7 +62,22 @@ public class Board extends JPanel implements ActionListener {
 	}
 
 	public Board() {
-		initBoard();
+		 try {
+             factories = new ArrayList<>();
+             List<PluginDescriptor> lpdesc = Platform.getInstance().getListPlugin(IAlienFactory.class);
+             
+             if(!lpdesc.isEmpty()){
+                 PluginDescriptor pdesc = lpdesc.get(0);
+                 alienFactory = (IAlienFactory)Platform.getInstance().getPluginInstance(pdesc);
+             }
+             initBoard();
+         } catch (NoSuchElementException ex) {
+             Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
+         } catch (IllegalArgumentException ex) {
+             Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
+         } catch (IOException ex) {
+             Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
+         }
 	}
 
 	private void initBoard() {
@@ -98,6 +117,8 @@ public class Board extends JPanel implements ActionListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
 	}
 
 	public void initAliens() {
@@ -105,7 +126,7 @@ public class Board extends JPanel implements ActionListener {
 
 		for (int[] p : pos) {
 			if ((p[1] < 450) && (p[1] > 50))
-				aliens.add(new Alien(p[0] + 1000, p[1]));
+				aliens.add((IAlien)alienFactory.createAlien());
 		}
 	}
 
@@ -144,7 +165,7 @@ public class Board extends JPanel implements ActionListener {
 			}
 		}
 
-		for (Alien a : aliens) {
+		for (IAlien a : aliens) {
 			if (a.isVisible()) {
 				g.drawImage(a.getImage(), a.getX(), a.getY(), this);
 			}
@@ -232,7 +253,7 @@ public class Board extends JPanel implements ActionListener {
 		 */
 		for (int i = 0; i < aliens.size(); i++) {
 
-			Alien a = aliens.get(i);
+			IAlien a = aliens.get(i);
 			if (a.isVisible()) {
 				a.move();
 			} else {
@@ -244,7 +265,7 @@ public class Board extends JPanel implements ActionListener {
 			Random rdm = new Random();
 			int p = rdm.nextInt(NBR_FIRE);
 			if ((pos[p][1] < 450) && (pos[p][1] > 50)) {
-				aliens.add(new Alien(pos[p][0] + 1000, pos[p][1]));
+				aliens.add(alienFactory.createAlien());
 				generationOffset = 0;
 			}
 		}
@@ -255,7 +276,7 @@ public class Board extends JPanel implements ActionListener {
 
 		Rectangle r3 = roger.getBounds();
 
-		for (Alien alien : aliens) {
+		for (IAlien alien : aliens) {
 			Rectangle r2 = alien.getBounds();
 
 			if (r3.intersects(r2)) {
@@ -271,7 +292,7 @@ public class Board extends JPanel implements ActionListener {
 
 			Rectangle r1 = m.getBounds();
 
-			for (Alien alien : aliens) {
+			for (IAlien alien : aliens) {
 
 				Rectangle r2 = alien.getBounds();
 
